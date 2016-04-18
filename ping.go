@@ -1,4 +1,8 @@
-package minebot
+package main
+
+import (
+	"github.com/jlindsey/gobot"
+)
 
 type PingCommand struct{}
 
@@ -6,11 +10,12 @@ func (PingCommand) String() string {
 	return "PingCommand{}"
 }
 
-func (PingCommand) Run() (string, error) {
-	return "Pong", nil
+func (PingCommand) Run(channel string, text string, out chan *gobot.SlackMessage) error {
+	out <- gobot.NewSlackMessage(channel, `Pong!`)
+	return nil
 }
 
-func (*PingCommand) Matches(msg string) bool {
+func (PingCommand) Matches(msg string) bool {
 	return msg == "ping"
 }
 
