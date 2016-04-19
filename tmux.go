@@ -41,9 +41,9 @@ func commandsForOperation(tmuxServerName string, keys string) (hash string, comm
 	commands = [][]string{
 		[]string{"-L", tmuxServerName, "send-keys", begin, "Enter"},
 		[]string{"-L", tmuxServerName, "send-keys", keys, "Enter"},
+		[]string{"SLEEP"},
 		[]string{"-L", tmuxServerName, "send-keys", end, "Enter"},
 		[]string{"-L", tmuxServerName, "capture-pane"},
-		[]string{"SLEEP"},
 		[]string{"-L", tmuxServerName, "show-buffer"},
 	}
 
@@ -105,7 +105,7 @@ func TmuxSendKeysAndCapture(tmuxServerName string, keys string) (str string, err
 
 	for i, args := range commands {
 		if len(args) == 1 && args[0] == "SLEEP" {
-			time.Sleep(time.Second)
+			time.Sleep(500 * time.Millisecond)
 			continue
 		}
 
