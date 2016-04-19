@@ -105,7 +105,7 @@ func TmuxSendKeysAndCapture(tmuxServerName string, keys string) (str string, err
 
 	for i, args := range commands {
 		if len(args) == 1 && args[0] == "SLEEP" {
-			time.Sleep(500 * time.Millisecond)
+			time.Sleep(time.Second)
 			continue
 		}
 
