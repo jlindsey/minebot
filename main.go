@@ -16,7 +16,8 @@ func main() {
 	bot.RegisterCommand(&PingCommand{})
 	bot.RegisterCommand(&ListCommand{})
 	bot.RegisterCommand(&RestartCommand{})
-	bot.RegisterCommand(&GiveCommand{regexp.MustCompile(`^give (.*\s?){2,}`)})
+	giveReg := regexp.MustCompile(`^give (.*?){3,4}$`)
+	bot.RegisterCommand(&GiveCommand{giveReg})
 
 	bot.Start()
 }

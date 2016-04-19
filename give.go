@@ -32,5 +32,13 @@ func (g GiveCommand) Matches(str string) bool {
 }
 
 func (g *GiveCommand) Run(channel string, text string, out chan *gobot.SlackMessage) error {
+	output, err := TmuxSendKeysAndCapture(tmuxServerName, text)
+
+	if err != nil {
+		return err
+	}
+
+	out <- gobot.NewSlackMessage(channel, stripMinecraftLogger(output))
+
 	return nil
 }
