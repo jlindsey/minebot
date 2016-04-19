@@ -25,7 +25,7 @@ func (ListCommand) Run(channel string, text string, out chan *gobot.SlackMessage
 		return err
 	}
 
-	out <- gobot.NewSlackMessage(channel, output)
+	out <- gobot.NewSlackMessage(channel, stripMinecraftLogger(output))
 
 	return nil
 }
