@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/jlindsey/gobot"
-	"github.com/jlindsey/tmuxutils"
 	"time"
 )
 
@@ -39,7 +38,7 @@ func (cmd *RestartCommand) doRestart(channel string, out chan *gobot.SlackMessag
 
 	slackAndServer := func(msg string) {
 		out <- gobot.NewSlackMessage(channel, msg)
-		tmuxutils.TmuxSendKeys(tmuxServerName, fmt.Sprintf("say %s", msg))
+		TmuxSendKeys(tmuxServerName, fmt.Sprintf("say %s", msg))
 	}
 
 	done := make(chan bool)
@@ -54,7 +53,7 @@ func (cmd *RestartCommand) doRestart(channel string, out chan *gobot.SlackMessag
 	time.AfterFunc(59*time.Second, func() { slackAndServer("Restarting in 1 second") })
 	time.AfterFunc(60*time.Second, func() {
 		slackAndServer("Restarting NOW")
-		tmuxutils.TmuxSendKeys(tmuxServerName, "stop")
+		TmuxSendKeys(tmuxServerName, "stop")
 		done <- true
 	})
 
