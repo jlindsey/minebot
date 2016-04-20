@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// RestartCommand restarts the server after a 1-minute interval
 type RestartCommand struct {
 	inProgress bool
 }
@@ -14,27 +15,30 @@ func (r RestartCommand) String() string {
 	return fmt.Sprintf("RestartCommand{ inProgress: %s }", r.inProgress)
 }
 
+// Help implements the Command interface
 func (RestartCommand) Help() string {
 	return "*restart*: Restart the server after a 1-minute countdown"
 }
 
+// Matches implements the Command interface
 func (RestartCommand) Matches(msg string) bool {
 	return msg == "restart"
 }
 
-func (cmd *RestartCommand) Run(channel string, text string, out chan *gobot.SlackMessage) error {
-	if cmd.inProgress {
+// Run implements the Command interface
+func (r *RestartCommand) Run(channel string, text string, out chan *gobot.SlackMessage) error {
+	if r.inProgress {
 		out <- gobot.NewSlackMessage(channel, "A restart is already in progress!")
 		return nil
 	}
 
-	go cmd.doRestart(channel, out)
+	go r.doRestart(channel, out)
 
 	return nil
 }
 
-func (cmd *RestartCommand) doRestart(channel string, out chan *gobot.SlackMessage) {
-	cmd.inProgress = true
+func (r *RestartCommand) doRestart(channel string, out chan *gobot.SlackMessage) {
+	r.inProgress = true
 
 	slackAndServer := func(msg string) {
 		out <- gobot.NewSlackMessage(channel, msg)
@@ -58,5 +62,5 @@ func (cmd *RestartCommand) doRestart(channel string, out chan *gobot.SlackMessag
 	})
 
 	<-done
-	cmd.inProgress = false
+	r.inProgress = false
 }

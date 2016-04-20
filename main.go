@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/jlindsey/gobot"
-	"regexp"
 )
 
 const (
@@ -16,8 +15,8 @@ func main() {
 	bot.RegisterCommand(&PingCommand{})
 	bot.RegisterCommand(&ListCommand{})
 	bot.RegisterCommand(&RestartCommand{})
-	giveReg := regexp.MustCompile(`^give (.*?){3,4}$`)
-	bot.RegisterCommand(&GiveCommand{giveReg})
+	bot.RegisterCommand(&GiveCommand{})
+	bot.RegisterCommand(&RollCommand{})
 
 	bot.Start()
 }

@@ -6,14 +6,18 @@ import (
 	"regexp"
 )
 
-type GiveCommand struct {
-	matcher *regexp.Regexp
-}
+var (
+	giveReg = regexp.MustCompile(`^give (.*?){3,4}$`)
+)
+
+// GiveCommand gives items to players
+type GiveCommand struct{}
 
 func (g GiveCommand) String() string {
-	return fmt.Sprintf("GiveCommand{ matcher: %s }", g.matcher.String())
+	return fmt.Sprintf("GiveCommand{ matcher: %s }", giveReg.String())
 }
 
+// Help implements the Command interface
 func (GiveCommand) Help() string {
 	return `*give*: Give an item to the specified player.
 	This takes the same arguments as the /give command in Minecraft. For example:
@@ -27,10 +31,12 @@ func (GiveCommand) Help() string {
 	@minebot: give notch minecraft:wool 10 4`
 }
 
+// Matches implements the Command interface
 func (g GiveCommand) Matches(str string) bool {
-	return g.matcher.MatchString(str)
+	return giveReg.MatchString(str)
 }
 
+// Run implements the Command interface
 func (g *GiveCommand) Run(channel string, text string, out chan *gobot.SlackMessage) error {
 	output, err := TmuxSendKeysAndCapture(tmuxServerName, text)
 
